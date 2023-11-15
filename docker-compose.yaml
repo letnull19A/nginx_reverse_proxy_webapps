@@ -1,0 +1,38 @@
+version: '3.9'
+name: 'nginx_react_typescript_docker'
+
+services:
+  gateway:
+    build: ./gateway
+    ports:
+      - 80:7070
+    depends_on:
+      - user
+      - admin
+    networks:
+      network:
+         ipv4_address: 3.10.0.10
+         
+  user:
+    build: ./services/service.user
+    ports:
+      - 7001:7698
+    networks:
+      network:
+         ipv4_address: 3.10.0.20
+
+  admin:
+    build: ./services/service.admin
+    ports:
+      - 7002:7699
+    networks:
+      network:
+         ipv4_address: 3.10.0.30
+
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+          - subnet: 3.10.0.0/16
+            gateway: 3.10.0.1
